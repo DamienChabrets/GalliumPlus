@@ -21,6 +21,7 @@
                     Background="Transparent"
                     Foreground="#252422"
                     Width="20"
+                    IsChecked="True"
                     Height="20"
                     Style="{StaticResource MaterialDesignActionToggleButton}"
                     materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=GridOff, Size=18}"

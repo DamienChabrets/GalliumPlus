@@ -1,6 +1,5 @@
-﻿
-using Couche_Data.Dao;
-using Couche_Data.Interfaces;
+﻿using Couche_Data.Interfaces;
+using GalliumPlusApi.Dao;
 using Modeles;
 
 namespace Couche_Métier.Manager
@@ -29,7 +28,7 @@ namespace Couche_Métier.Manager
         /// </summary>
         public CategoryManager() 
         {
-            this.iCategory = new CategoryDAO();
+            this.iCategory = new CategoryDao();
             categories = this.iCategory.ListALlCategory();
         }
         #endregion

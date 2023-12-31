@@ -14,7 +14,7 @@
       Background="White"
       ShowsNavigationUI="False">
 
-    <Grid  Margin="20,50,20,50">
+    <Grid  Margin="20,50,20,0">
         <!-- Ligne 1 - Colonne 0: Liste des produits-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>

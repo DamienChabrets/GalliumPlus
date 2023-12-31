@@ -1,4 +1,5 @@
 ﻿
+using Couche_IHM.VueModeles;
 using System.Windows.Controls;
 
 namespace Couche_IHM.Frames
@@ -14,6 +15,7 @@ namespace Couche_IHM.Frames
         public FrameStatistique()
         {
             InitializeComponent();
+            DataContext = MainWindowViewModel.Instance;
         }
     }
 }

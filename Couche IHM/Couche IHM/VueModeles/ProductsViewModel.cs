@@ -108,9 +108,9 @@ namespace Couche_IHM.VueModeles
 
                 return produitsIHM;
             }
-            set 
-            { 
-                products = value; 
+            set
+            {
+                products = value;
             }
         }
 
@@ -133,23 +133,23 @@ namespace Couche_IHM.VueModeles
         public string SearchFilter
         {
             get => searchFilter;
-            set 
+            set
             {
                 searchFilter = value;
                 NotifyPropertyChanged(nameof(Products));
-                
-            } 
+
+            }
         }
 
         /// <summary>
         /// Permet de montrer la popup du produit
         /// </summary>
-        public bool ShowProductDetail 
-        { 
+        public bool ShowProductDetail
+        {
             get => showProductDetail;
-            set 
-            { 
-                showProductDetail = value; 
+            set
+            {
+                showProductDetail = value;
                 NotifyPropertyChanged(nameof(ShowProductDetail));
             }
         }
@@ -157,12 +157,12 @@ namespace Couche_IHM.VueModeles
         /// <summary>
         /// Permet d'afficher la popup des catégories
         /// </summary>
-        public bool ShowCategories 
-        { 
+        public bool ShowCategories
+        {
             get => showCategories;
             set
-            { 
-                showCategories = value; 
+            {
+                showCategories = value;
                 NotifyPropertyChanged();
             }
         }
@@ -170,12 +170,12 @@ namespace Couche_IHM.VueModeles
         /// <summary>
         /// Permet d'afficher l'icone pour supprimer un produit
         /// </summary>
-        public bool ShowDeleteProduct 
-        { 
+        public bool ShowDeleteProduct
+        {
             get => showDeleteProduct;
-            set 
+            set
             {
-                if (MainWindowViewModel.Instance.CompteConnected.RoleIHM.Name != "Conseil d'administration")
+                if (MainWindowViewModel.Instance.CompteConnected.Role.Name != "Conseil d'administration")
                 {
                     showDeleteProduct = value;
                     NotifyPropertyChanged();
@@ -229,12 +229,21 @@ namespace Couche_IHM.VueModeles
         #endregion
 
         #region methods
+        private class ProductComparer : IComparer<Product>
+        {
+            public int Compare(Product? x, Product? y)
+            {
+                return StringComparer.CurrentCultureIgnoreCase.Compare(x?.NomProduit, y?.NomProduit);
+            }
+        }
+
         /// <summary>
         /// Permet de récupérer la liste des adhérents
         /// </summary>
         private void InitProducts()
         {
             List<Product> produitsMetier = this.productManager.GetProducts();
+            produitsMetier.Sort(new ProductComparer());
             List<CategoryViewModel> categories = this.categories.ToList();
             foreach (Product prd in produitsMetier)
             {
@@ -243,8 +252,8 @@ namespace Couche_IHM.VueModeles
                 {
                     catProduit = categories.Find(x => x.Id == prd.Categorie);
                 }
-                
-                this.products.Add(new ProductViewModel(prd,this.productManager,this.categoryManager,catProduit));
+
+                this.products.Add(new ProductViewModel(prd, this.productManager, this.categoryManager, catProduit));
             }
         }
 
@@ -257,7 +266,7 @@ namespace Couche_IHM.VueModeles
             List<Category> categories = this.categoryManager.ListAllCategory();
             foreach (Category cat in categories)
             {
-                this.categories.Add(new CategoryViewModel(this.categoryManager,cat));
+                this.categories.Add(new CategoryViewModel(this.categoryManager, cat));
             }
         }
 
@@ -271,13 +280,13 @@ namespace Couche_IHM.VueModeles
             if (action == "NEW" || currentProduct == null || currentProduct.Action == "NEW")
             {
                 ShowDeleteProduct = false;
-                CurrentProduct = new ProductViewModel(new Product(),this.productManager,this.categoryManager ,null,"NEW");
+                CurrentProduct = new ProductViewModel(new Product(), this.productManager, this.categoryManager, null, "NEW");
             }
             else
             {
                 ShowDeleteProduct = true;
             }
-            
+
             ShowProductDetail = true;
         }
 
@@ -287,11 +296,13 @@ namespace Couche_IHM.VueModeles
         public void CreateCategory()
         {
             // Mise à jour data
-            CategoryViewModel cat = new CategoryViewModel(this.categoryManager,new Category(0,"New",true));
-            this.categoryManager.CreateCategory(cat.Category);
+            CategoryViewModel cat = new CategoryViewModel(this.categoryManager, new Category(0, "New", true));
+            if (MessageBoxErrorHandler.DoesntThrow(() => this.categoryManager.CreateCategory(cat.Category)))
+            {
 
-            // Notifier la vue
-            Categories.Add(cat);
+                // Notifier la vue
+                Categories.Add(cat);
+            }
 
         }
 

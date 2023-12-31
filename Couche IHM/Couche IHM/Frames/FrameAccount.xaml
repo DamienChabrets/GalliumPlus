@@ -1,4 +1,4 @@
-﻿    <Page x:Class="Couche_IHM.Frames.FrameAcompte"
+﻿    <Page x:Class="Couche_IHM.Frames.FrameAccount"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,7 +7,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     mc:Ignorable="d" 
     d:DesignHeight="450" d:DesignWidth="800"
-    Title="FrameAcompte"
+    Title="FrameAccount"
     Background="White">
 
     <Grid Margin="20,50,20,0">
@@ -24,7 +24,7 @@
 
         <!-- ScrollViewer des adhérents-->
         <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,50"   >
-            <ListView  ItemsSource="{Binding AdherentViewModel.Acomptes}" SelectedItem="{Binding AdherentViewModel.CurrentAcompte}"  HorizontalContentAlignment="Stretch"  VerticalContentAlignment="Top" >
+            <ListView  ItemsSource="{Binding AccountsViewModel.Accounts}" SelectedItem="{Binding AccountsViewModel.CurrentAccount}"  HorizontalContentAlignment="Stretch"  VerticalContentAlignment="Top" >
                 <ListView.Template >
                     <ControlTemplate >
                         <!-- Header des colonnes -->
@@ -55,7 +55,7 @@
                                     FontWeight="Medium" 
                                     FontFamily="Roboto"  
                                     FontSize="18" 
-                                    Text="Acompte" />
+                                    Text="Account" />
 
                                 <TextBlock 
                                     HorizontalAlignment="Center"
@@ -112,7 +112,7 @@
                         BorderBrush="LightGreen"
                         FontSize="17" 
                         Grid.ColumnSpan="2"
-                        Text="{Binding AdherentViewModel.SearchFilter, UpdateSourceTrigger=PropertyChanged}"   />
+                        Text="{Binding AccountsViewModel.SearchFilter, UpdateSourceTrigger=PropertyChanged}"   />
 
                 <materialDesign:PackIcon
                     Margin="-10,0,0,0"
@@ -127,7 +127,7 @@
 
             <!-- Info -->
             <materialDesign:Flipper
-                    IsFlipped="{Binding AdherentViewModel.ShowAcompte}"
+                    IsFlipped="{Binding AccountsViewModel.ShowAccount}"
                     Margin="0,100,0,0" 
                     HorizontalAlignment="Center" 
                     >
@@ -154,7 +154,7 @@
 
                             <!-- Créer un acompte -->
                             <Button 
-                                    Command="{Binding AdherentViewModel.OpenModifAdh}"
+                                    Command="{Binding AccountsViewModel.OpenModifAdh}"
                                     CommandParameter="NEW"
                                     VerticalAlignment="Bottom" 
                                     HorizontalAlignment="Center" 
@@ -174,7 +174,7 @@
                                         />
                                     <TextBlock 
                                             VerticalAlignment="Center"
-                                            Text="Acompte"
+                                            Text="Account"
                                             FontSize="16"/>
                                 </DockPanel>
                             </Button>
@@ -198,7 +198,7 @@
                                 >
                             <TextBlock 
                                     Margin="0,15,0,0"
-                                    Text="{Binding AdherentViewModel.CurrentAcompte.NomCompletIHM}" 
+                                    Text="{Binding AccountsViewModel.CurrentAccount.NomCompletIHM}" 
                                     TextAlignment="Center"
                                     Width="140" 
                                     HorizontalAlignment="Center"
@@ -209,7 +209,7 @@
                             <!-- Bouton ouvrir détails -->
                             <Button 
                                 
-                                    Command="{Binding AdherentViewModel.OpenModifAdh}" 
+                                    Command="{Binding AccountsViewModel.OpenModifAdh}" 
                                     CommandParameter="DS"
                                     Margin="180,-20,0,0"  
                                     Width="20"    
@@ -255,7 +255,7 @@
                                             MaxLength="8">
                                             <TextBox.Text>
                                                 <Binding 
-                                                Path="AdherentViewModel.CurrentAcompte.IdentifiantIHM"
+                                                Path="AccountsViewModel.CurrentAccount.IdentifiantIHM"
                                                 UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
                                                         <rules:RuleIDFormat/>
@@ -283,7 +283,7 @@
                                             FontSize="16"  
                                             Foreground="Black"   >
                                             <TextBox.Text >
-                                                <Binding Path="AdherentViewModel.CurrentAcompte.ArgentIHM"
+                                                <Binding Path="AccountsViewModel.CurrentAccount.ArgentIHM"
                                                 UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
                                                         <rules:RuleMoneyFormat/>
@@ -299,10 +299,10 @@
                                 <StackPanel.Style>
                                     <Style TargetType="StackPanel">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding AdherentViewModel.ShowModifButtons}" Value="true">
+                                            <DataTrigger Binding="{Binding AccountsViewModel.ShowModifButtons}" Value="true">
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding AdherentViewModel.ShowModifButtons}" Value="false">
+                                            <DataTrigger Binding="{Binding AccountsViewModel.ShowModifButtons}" Value="false">
                                                 <Setter Property="Visibility" Value="Hidden"/>
                                             </DataTrigger>
 
@@ -314,7 +314,7 @@
                                     Style="{StaticResource buttonImage}"
                                     BorderBrush="Transparent"
                                     Background="Transparent"
-                                    Command="{Binding AdherentViewModel.CurrentAcompte.ResetAdh}">
+                                    Command="{Binding AccountsViewModel.CurrentAccount.ResetAdh}">
                                     <materialDesign:PackIcon
                                         Foreground="Red"
                                         Width="35"
@@ -326,7 +326,7 @@
                                 <Button 
                                     Style="{StaticResource buttonImage}"
                                     Margin="20,0,0,0"
-                                    Command="{Binding AdherentViewModel.CurrentAcompte.ModifyAdherent}"
+                                    Command="{Binding AccountsViewModel.CurrentAccount.ModifyAdherent}"
                                     BorderBrush="Transparent"
                                     Background="Transparent">
                                     <materialDesign:PackIcon
@@ -347,26 +347,26 @@
         </StackPanel>
 
         <!-- Suppression d un acompte -->
-        <materialDesign:DialogHost  CloseOnClickAway="True" Grid.ColumnSpan="2" Grid.RowSpan="2" OverlayBackground="Gray" IsOpen="{Binding AdherentViewModel.CurrentAcompte.ShowConfirmationDelete}" DialogTheme="Inherit" >
+        <materialDesign:DialogHost  CloseOnClickAway="True" Grid.ColumnSpan="2" Grid.RowSpan="2" OverlayBackground="Gray" IsOpen="{Binding AccountsViewModel.CurrentAccount.ShowConfirmationDelete}" DialogTheme="Inherit" >
             <materialDesign:DialogHost.DialogContent>
                 <Grid Margin="30">
                     <StackPanel Orientation="Vertical">
                         <TextBlock FontSize="24" Margin="0 0 0 20">
-                            <TextBlock Text="{Binding Path=AdherentViewModel.CurrentAcompte.IdentifiantIHM, StringFormat=Suppresion de {0}}" />
+                            <TextBlock Text="{Binding Path=AccountsViewModel.CurrentAccount.IdentifiantIHM, StringFormat=Suppresion de {0}}" />
                         </TextBlock>
                         <UniformGrid Rows="1" Columns="2" Height="50">
                             <Button 
                                 Margin="0 0 20 0" 
                                 FontSize="18"
                                 Content="Annuler"
-                                Command="{Binding AdherentViewModel.CurrentAcompte.CancelDeleteAdh}"
+                                Command="{Binding AccountsViewModel.CurrentAccount.CancelDeleteAdh}"
                                 Style="{StaticResource buttonBlack}" 
                                 Grid.Column="2"/>
                             <Button 
                                 Content="Confirmer"
                                 Margin="20 0 0 0" 
                                 FontSize="18" 
-                                Command="{Binding AdherentViewModel.CurrentAcompte.DeleteAdh}"
+                                Command="{Binding AccountsViewModel.CurrentAccount.DeleteAdh}"
                                 Style="{StaticResource buttonBlack}"/>
                         </UniformGrid>
                     </StackPanel>
@@ -376,7 +376,7 @@
 
 
         <!-- Modification / Creation acompte -->
-        <materialDesign:DialogHost  CloseOnClickAway="True" Grid.ColumnSpan="2" Grid.RowSpan="2" OverlayBackground="Gray" IsOpen="{Binding AdherentViewModel.DialogModifAdherent}" Name="popup" DialogTheme="Inherit" >
+        <materialDesign:DialogHost  CloseOnClickAway="True" Grid.ColumnSpan="2" Grid.RowSpan="2" OverlayBackground="Gray" IsOpen="{Binding AccountsViewModel.DialogModifAccount}" DialogTheme="Inherit" >
 
             <materialDesign:DialogHost.DialogContent>
                 <Grid Margin="10">
@@ -407,12 +407,12 @@
                         Margin="10"
                         TextDecorations="Underline"  
                         HorizontalAlignment="Center" 
-                        Text="Acompte" />
+                        Text="Account" />
 
                     <Button  
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
-                        Command="{Binding AdherentViewModel.CurrentAcompte.PreviewAdh}"
+                        Command="{Binding AccountsViewModel.CurrentAccount.PreviewAdh}"
                         Grid.Column="2"
                         Grid.Row="0">
                         <materialDesign:PackIcon 
@@ -422,23 +422,24 @@
                         <Button.Style>
                             <Style BasedOn="{StaticResource buttonImage}"  TargetType="Button">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding AdherentViewModel.ShowDeleteAcompte}" Value="true">
+                                    <DataTrigger Binding="{Binding AccountsViewModel.ShowDeleteAccount}" Value="true">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding AdherentViewModel.ShowDeleteAcompte}" Value="false">
+                                    <DataTrigger Binding="{Binding AccountsViewModel.ShowDeleteAccount}" Value="false">
                                         <Setter Property="Visibility" Value="Hidden"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
                     </Button>
+                    
                     <TextBox 
                         Grid.Column="0"
                         Grid.Row="2"
                         Width="150"
                         Margin="20,20,20,10"
                         materialDesign:HintAssist.Hint="Nom"
-                        Text="{Binding AdherentViewModel.CurrentAcompte.NomIHM}"
+                        Text="{Binding AccountsViewModel.CurrentAccount.NomIHM}"
                         FontSize="16"   
                         Style="{StaticResource MaterialDesignFilledTextBox}"  
                         MaxLength="100"/>
@@ -450,7 +451,7 @@
                         Width="150"
                         Margin="20,20,20,10"
                         materialDesign:HintAssist.Hint="Prénom"
-                        Text="{Binding AdherentViewModel.CurrentAcompte.PrenomIHM}"
+                        Text="{Binding AccountsViewModel.CurrentAccount.PrenomIHM}"
                         FontSize="16"   
                         Style="{StaticResource MaterialDesignFilledTextBox}"
                         MaxLength="100"/>
@@ -466,7 +467,7 @@
                         MaxLength="8">
                         <TextBox.Text>
                             <Binding 
-                                        Path="AdherentViewModel.CurrentAcompte.IdentifiantIHM"
+                                        Path="AccountsViewModel.CurrentAccount.IdentifiantIHM"
                                         UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <rules:RuleIDFormat/>
@@ -484,7 +485,7 @@
                         Style="{StaticResource MaterialDesignFilledTextBox}">
                         <TextBox.Text>
                             <Binding 
-                                Path="AdherentViewModel.CurrentAcompte.ArgentIHM"
+                                Path="AccountsViewModel.CurrentAccount.ArgentIHM"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <rules:RuleMoneyFormat/>
@@ -499,7 +500,7 @@
                         Opacity="0.7" 
                         Margin="20,20,20,10"
                         materialDesign:HintAssist.Hint="Formation (optional)"
-                        Text="{Binding AdherentViewModel.CurrentAcompte.FormationIHM}"
+                        Text="{Binding AccountsViewModel.CurrentAccount.FormationIHM}"
                         FontSize="16"   
                         Style="{StaticResource MaterialDesignFilledTextBox}"/>
 
@@ -518,7 +519,7 @@
                         HorizontalAlignment="Center"
                         materialDesign:CheckBoxAssist.CheckBoxSize="25"
                         Grid.Row="10"
-                        IsChecked="{Binding AdherentViewModel.CurrentAcompte.IsAdherentIHM}"
+                        IsChecked="{Binding AccountsViewModel.CurrentAccount.IsAdherentIHM}"
                         Background="Green"
                         />
 
@@ -527,7 +528,7 @@
                         Grid.Row="11"
                         FontSize="16"
                         Margin="20,0,20,10"
-                        Command="{Binding AdherentViewModel.CurrentAcompte.ResetAdh}"
+                        Command="{Binding AccountsViewModel.CurrentAccount.ResetAdh}"
                         Content="Annuler" 
                         BorderThickness="0"
                         Background="Gray"
@@ -540,15 +541,15 @@
                         Grid.Row="11"
                         Content="Modifier"
                         BorderThickness="0"
-                        Command="{Binding AdherentViewModel.CurrentAcompte.ModifyAdherent}"
+                        Command="{Binding AccountsViewModel.CurrentAccount.ModifyAdherent}"
                         Background="{StaticResource galliumColor}">
                         <Button.Style>
                             <Style BasedOn="{StaticResource MaterialDesignRaisedDarkButton}" TargetType="Button">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding AdherentViewModel.CurrentAcompte.Action}" Value="NEW">
+                                    <DataTrigger Binding="{Binding AccountsViewModel.CurrentAccount.Action}" Value="NEW">
                                         <Setter Property="Visibility" Value="Hidden"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding AdherentViewModel.CurrentAcompte.Action}" Value="UPDATE">
+                                    <DataTrigger Binding="{Binding AccountsViewModel.CurrentAccount.Action}" Value="UPDATE">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -563,15 +564,15 @@
                         Grid.Row="11"
                         Content="Créer"
                         BorderThickness="0"
-                        Command="{Binding AdherentViewModel.CurrentAcompte.CreateAdh}"
+                        Command="{Binding AccountsViewModel.CurrentAccount.CreateAdh}"
                         Background="{StaticResource galliumColor}">
                         <Button.Style>
                             <Style BasedOn="{StaticResource MaterialDesignRaisedDarkButton}" TargetType="Button">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding AdherentViewModel.CurrentAcompte.Action}" Value="NEW">
+                                    <DataTrigger Binding="{Binding AccountsViewModel.CurrentAccount.Action}" Value="NEW">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding AdherentViewModel.CurrentAcompte.Action}" Value="UPDATE">
+                                    <DataTrigger Binding="{Binding AccountsViewModel.CurrentAccount.Action}" Value="UPDATE">
                                         <Setter Property="Visibility" Value="Hidden"/>
                                     </DataTrigger>
                                 </Style.Triggers>

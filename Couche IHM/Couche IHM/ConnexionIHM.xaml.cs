@@ -1,11 +1,13 @@
 ﻿
 using Couche_IHM.ImagesProduit;
 using Couche_IHM.VueModeles;
+using Couche_Métier;
 using Couche_Métier.Manager;
 using MaterialDesignThemes.Wpf;
 using Modeles;
 using System;
 using System.Windows;
+using System.Windows.Input;
 
 
 
@@ -17,10 +19,10 @@ namespace Couche_IHM
     public partial class ConnexionIHM : Window
     {
         #region attributes
-        private UserManager userManager;
         private LogManager logManager;
         private string identifiant = "";
         private string password = "";
+        private SnackbarMessageQueue messageQueue;
         #endregion
 
         public ConnexionIHM()
@@ -29,54 +31,76 @@ namespace Couche_IHM
             DataContext = this;
             this.messageQueue = new SnackbarMessageQueue(new TimeSpan(0, 0, 2));
             ImageManager.VerifyFiles();
+            this.IsVisibleChanged += ConnexionIHM_IsVisibleChanged; ;
         }
 
-        public string Identifiant { get => identifiant; set => identifiant = value; }
-        public string Password { get => password; set => password = value; }
-        public SnackbarMessageQueue MessageQueue { get => messageQueue; set => messageQueue = value; }
+        private void ConnexionIHM_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (this.IsVisible == true)
+            {
+                foreach (var window in Application.Current.Windows)
+                {
+                    if (window is MainWindow mainWindow)
+                    {
+                        mainWindow.Close();
+                    }
+                }
+            }
+        }
 
-        private SnackbarMessageQueue messageQueue;
+        #region properties
+        /// <summary>
+        /// Identifiant de connexion
+        /// </summary>
+        public string Identifiant { get => identifiant; set => identifiant = value; }
+        /// <summary>
+        /// Mot de passe de connexion
+        /// </summary>
+        public string Password { get => password; set => password = value; }
+        /// <summary>
+        /// Snackbar pour les informations
+        /// </summary>
+        public SnackbarMessageQueue MessageQueue { get => messageQueue; set => messageQueue = value; }
+        #endregion
+
 
         /// <summary>
         /// Permet de se connecter à son compte et de créer la mainWindows
         /// </summary>
         private void ConnectToAccount(object sender, RoutedEventArgs e)
         {      
-            if (password == "" || identifiant == "")
+            try
             {
-                messageQueue.Enqueue("Vous devez remplir les deux champs !");
-            }
-            else
-            {
-                try
+                if (password == "" || identifiant == "")
                 {
-                    userManager = MainWindowViewModel.Instance.UserManager;
-                    logManager = MainWindowViewModel.Instance.LogManager;
-                    User? user = this.userManager.ConnectCompte(identifiant, password);
-                    if (user != null)
-                    {
-                        Log log = new Log(DateTime.Now, 1, $"Connexion de {user.Prenom} {user.Nom}", $"{user.Prenom} {user.Nom}");
-                        logManager.CreateLog(log);
-                        MainWindowViewModel.Instance.LogsViewModel.AddLog(new LogViewModel(log));
-                        MainWindow mainWindow = new MainWindow(user, logManager, userManager);
-                        mainWindow.Show();
-                        this.Close();
-                    }
-                    else
-                    {
-                        messageQueue.Enqueue("Mauvais mot de passe");
-                    }
-                }
-                catch(Exception ex)
-                {
-                    messageQueue?.Enqueue("Vous n'êtes pas connecté à Internet");
+                    throw new Exception("Vous devez remplir les deux champs !");
                 }
 
-                
-            }
-          
+                Account user = AccountManager.ConnectCompte(identifiant, password);
 
-            
+                MainWindow mainWindow = new MainWindow(user);
+                mainWindow.Show();
+                this.Close();
+
+                // Log de la connexion
+                logManager = MainWindowViewModel.Instance.LogManager;
+                Log log = new Log(DateTime.Now, 1, $"Connexion de {user.Prenom} {user.Nom}", $"{user.Prenom} {user.Nom}");
+                logManager.CreateLog(log);
+                MainWindowViewModel.Instance.LogsViewModel.AddLog(new LogViewModel(log));
+                    
+            }
+            catch(Exception ex)
+            {
+                messageQueue?.Enqueue(ex.Message);
+            }                
+        }
+
+        private void PasswordBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                this.ConnectToAccount(sender, e);
+            }
         }
     }
 }

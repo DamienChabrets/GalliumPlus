@@ -10,10 +10,12 @@
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="ClosedXML" Version="0.100.3" />
+    <PackageReference Include="Konscious.Security.Cryptography.Argon2" Version="1.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Couche Data\Couche Data.csproj" />
+    <ProjectReference Include="..\GalliumPlusApi\GalliumPlusApi.csproj" />
     <ProjectReference Include="..\Modeles\Modeles.csproj" />
   </ItemGroup>
 

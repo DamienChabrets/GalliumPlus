@@ -3,10 +3,10 @@ using System.Windows.Controls;
 
 namespace Couche_IHM.Frames
 {
-    public partial class FrameAcompte : Page
+    public partial class FrameAccount : Page
     {
 
-        public FrameAcompte()
+        public FrameAccount()
         {
             InitializeComponent();
             DataContext = MainWindowViewModel.Instance;

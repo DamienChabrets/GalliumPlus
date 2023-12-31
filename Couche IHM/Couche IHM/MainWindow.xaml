@@ -22,7 +22,7 @@
 
         <!-- PREMIERE COLONNE -->
         
-        <Grid Grid.Column="0" Background="#252422" HorizontalAlignment="Left">
+        <Grid Grid.Column="0" x:Name="Menu" Background="#252422" HorizontalAlignment="Left">
             <Grid.RowDefinitions>
                 <RowDefinition Height="10*" Tag="Nom app"/>
                 <RowDefinition Height="20*" Tag="Bouton"/>
@@ -57,6 +57,7 @@
                 <StackPanel >
                     <Button 
                         Height="45" 
+                        Name="buttonAccueil"
                         Style="{StaticResource buttonNavBarre}" 
                         Command="{Binding ChangeFrame}"
                         CommandParameter="{x:Static vm:Frame.FRAMEACCUEIL}"
@@ -66,6 +67,7 @@
                     <Button 
                         Height="45" 
                         FontSize="16"
+                        Name="buttonCaisse"
                         Style="{StaticResource buttonNavBarre}" 
                         Command="{Binding ChangeFrame}"
                         CommandParameter="{x:Static vm:Frame.FRAMECAISSE}"
@@ -73,11 +75,13 @@
                     <Button 
                         Height="45" 
                         FontSize="16"
+                        Name="buttonAccount"
                         Style="{StaticResource buttonNavBarre}" 
                         Command="{Binding ChangeFrame}"
-                        CommandParameter="{x:Static vm:Frame.FRAMEACOMPTE}"
+                        CommandParameter="{x:Static vm:Frame.FRAMEACCOUNT}"
                         Content="Acomptes"/>
                     <Button 
+                        Name="buttonStock"
                         Height="45" 
                         FontSize="16"
                         Style="{StaticResource buttonNavBarre}" 
@@ -85,8 +89,7 @@
                         CommandParameter="{x:Static vm:Frame.FRAMESTOCK}"
                         Content="Stock"/>
                     <Button 
-                        Opacity="{Binding CompteConnected.CanSeeCompte}"
-                        IsEnabled="{Binding CompteConnected.CanSeeCompteBool}"
+                        Name="buttonComptes"
                         Height="45" 
                         FontSize="16"
                         Style="{StaticResource buttonNavBarre}" 
@@ -110,8 +113,6 @@
                 <Button 
                     Style="{StaticResource buttonImage}" 
                     Command="{Binding ChangeFrame}"
-                    Opacity="0.5"
-                    IsEnabled="False"
                     CommandParameter="{x:Static vm:Frame.FRAMESTATISTIQUE}"
                     Grid.Row="0"
                     Grid.Column="0">
@@ -153,9 +154,7 @@
 
             </Grid>
         </Grid>
-        
-        <Viewbox Grid.Column="1">
-            
+
             <!-- DEUXIEME COLONNE -->
             <Grid  Grid.Column="1"   >
                 <Grid.RowDefinitions>
@@ -171,41 +170,36 @@
                         <TextBlock 
                             Text="{Binding Frame, Converter={StaticResource EnumToNameConverter}}"
                             FontSize="25" 
-
                             VerticalAlignment="Center" 
                             Margin="40,0,0,0" 
                             Foreground="Black" 
                             FontWeight="Bold"/>
 
                         <!-- Info du compte connecté-->
-                    <Grid HorizontalAlignment="Right"   >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10*" />
-                            <ColumnDefinition Width="10*" />
-                        </Grid.ColumnDefinitions>
-                        <!-- Image du compte  -->
-
+                    <StackPanel Margin="0,0,20,0" HorizontalAlignment="Right" Orientation="Horizontal">
                         <Image 
-                            Grid.Column="0" 
-                            Source="/Images/logoEtiq.png" 
-                            Width="40" 
-                            Height="auto" 
-                            VerticalAlignment="Center"  
-                            HorizontalAlignment="Right" />
+     Grid.Column="0" 
+     Source="/Images/logoEtiq.png" 
+     Width="40" 
+     Height="auto" 
+     VerticalAlignment="Center"  
+     HorizontalAlignment="Left" />
                         <StackPanel 
-                            Grid.Column="1" 
-                            VerticalAlignment="Center" 
-                            HorizontalAlignment="Center">
+     Margin="10,0,0,0"
+     Grid.Column="1" 
+     VerticalAlignment="Center" 
+     HorizontalAlignment="Center">
                             <TextBlock 
-                                Text="{Binding CompteConnected.NomCompletIHM}" 
-                                FontSize="13" 
-                                FontWeight="Bold"/>
+         Text="{Binding CompteConnected.NomCompletIHM}" 
+         FontSize="15" 
+         FontWeight="Bold"/>
                             <TextBlock 
-                                Text="{Binding CompteConnected.RoleIHM}" 
-                                FontSize="11" 
-                                FontWeight="DemiBold" />
+         Text="{Binding CompteConnected.Role}" 
+         FontSize="13" 
+         FontWeight="DemiBold" />
                         </StackPanel>
-                    </Grid>
+                    </StackPanel>
+
                 </Grid>
                 </materialDesign:Card>
                 <Frame 
@@ -214,8 +208,6 @@
                     NavigationUIVisibility="Hidden"/>
                 
             </Grid>
-
-        </Viewbox>
 
     </Grid>
 </Window>

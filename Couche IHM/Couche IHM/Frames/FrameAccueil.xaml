@@ -11,7 +11,7 @@
       Background="White">
     <Page.Resources>
         <rules:PositionPodiumProduit x:Key="PositionConverter" />
-        <rules:PositionPodiumAcompte x:Key="PositionConverter2" />
+        <rules:PositionPodiumAccount x:Key="PositionConverter2" />
     </Page.Resources>
 
     <Grid  Margin="50,50,0,25">
@@ -39,10 +39,11 @@
         
         <!-- Title -->
         <StackPanel 
+            VerticalAlignment="Top"
             Orientation="Horizontal" 
             Grid.Row="1"
             HorizontalAlignment="Center"
-            Grid.Column="3"
+            Grid.Column="2"
             Grid.ColumnSpan="2">
             <materialDesign:PackIcon
                 Foreground="{StaticResource galliumColor}"
@@ -53,7 +54,7 @@
                 Kind="Podium"/>
             <TextBlock 
                 Margin="10,0,0,0"
-                FontSize="27"
+                FontSize="29"
                 VerticalAlignment="Bottom"
                 FontWeight="Bold"
                 Text="Top de la semaine"/>
@@ -66,11 +67,11 @@
                 Kind="Podium"/>
         </StackPanel>
 
-        <!-- Acomptes -->
+        <!-- Accounts -->
         <TextBlock 
             Grid.Row="2"
             Grid.ColumnSpan="2"
-            FontSize="20"
+            FontSize="23"
             HorizontalAlignment="Center"
             FontWeight="DemiBold"
             Text="Adhérents fidèles"/>
@@ -81,7 +82,7 @@
             Grid.Row="3"
             Grid.RowSpan="5" 
             Orientation="Vertical">
-            <ItemsControl ItemsSource="{Binding StatViewModel.PodiumAcompte}">
+            <ItemsControl ItemsSource="{Binding StatViewModel.PodiumAccount}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="0,10,0,0">
@@ -98,27 +99,29 @@
                             <TextBlock
                                 HorizontalAlignment="Right"
                                 Margin="0,20,0,0"
-                                FontSize="14"
+                                FontSize="15"
                                 Text="{Binding FormattedArgent}"
                                 Grid.Column="1"
                                 />
 
                             <!-- nom adhenret-->
-                            <materialDesign:Chip     
+                            <materialDesign:Chip  
                                 Grid.Row="0"
                                 Grid.Column="0"
-
-                                Content="{Binding AdherentViewModel.NomCompletIHM}">
+                                Command="{Binding DataContext.StatViewModel.FindAccount, 
+                                    RelativeSource={RelativeSource AncestorType={x:Type StackPanel}}}"
+                                CommandParameter="{Binding AccountsViewModel}"
+                                Content="{Binding AccountsViewModel.NomCompletIHM}">
                                 <materialDesign:Chip.Style>
                                     <Style TargetType="materialDesign:Chip">
                                         <Style.Setters>
                                             <Setter Property="IconBackground" Value="#004D40" />
-                                            <Setter Property="FontSize" Value="15"/>
+                                            <Setter Property="FontSize" Value="17"/>
                                         </Style.Setters>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding AdherentViewModel.IdentifiantIHM, Converter={StaticResource PositionConverter2}}" Value="4">
+                                            <DataTrigger Binding="{Binding AccountsViewModel.IdentifiantIHM, Converter={StaticResource PositionConverter2}}" Value="4">
                                                 <Setter Property="IconBackground" Value="#EDEDED"/>
-                                                <Setter Property="FontSize" Value="14"/>
+                                                <Setter Property="FontSize" Value="16"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -134,15 +137,15 @@
                                                     <Setter Property="Foreground" Value="Gold" />
                                                 </Style.Setters>
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding AdherentViewModel.IdentifiantIHM, Converter={StaticResource PositionConverter2}}" Value="2">
+                                                    <DataTrigger Binding="{Binding AccountsViewModel.IdentifiantIHM, Converter={StaticResource PositionConverter2}}" Value="2">
                                                         <Setter Property="Kind" Value="Numeric2" />
                                                         <Setter Property="Foreground" Value="Silver" />
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding AdherentViewModel.IdentifiantIHM, Converter={StaticResource PositionConverter2}}" Value="3">
+                                                    <DataTrigger Binding="{Binding AccountsViewModel.IdentifiantIHM, Converter={StaticResource PositionConverter2}}" Value="3">
                                                         <Setter Property="Kind" Value="Numeric3" />
                                                         <Setter Property="Foreground" Value="#CD853F" />
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding AdherentViewModel.IdentifiantIHM, Converter={StaticResource PositionConverter2}}" Value="4">
+                                                    <DataTrigger Binding="{Binding AccountsViewModel.IdentifiantIHM, Converter={StaticResource PositionConverter2}}" Value="4">
                                                         <Setter Property="Margin" Value="7,0,0,0"/>
                                                         <Setter Property="Kind" Value="Numeric4" />
                                                         <Setter Property="Foreground" Value="#4d5157"/>
@@ -160,7 +163,8 @@
                                 Foreground="LightGreen"
                                 Background="LightGray"
                                 BorderBrush="Transparent"
-                                Maximum="100" 
+                                Maximum="{Binding DataContext.StatViewModel.FirstArgent, 
+                                    RelativeSource={RelativeSource AncestorType={x:Type StackPanel}}}" 
                                 Height="12"
                                 Value="{Binding Argent}" />
                         </Grid>
@@ -174,7 +178,7 @@
             Grid.Row="2"
             Grid.Column="4"
             Grid.ColumnSpan="2"
-            FontSize="20"
+            FontSize="23"
             HorizontalAlignment="Center"
             FontWeight="DemiBold"
             Text="Meilleures ventes"/>
@@ -204,6 +208,7 @@
                                 Margin="0,20,0,0"
                                 Text="{Binding Path=PurchaseCount, StringFormat=' {0}'}"
                                 Grid.Column="0"
+                                FontSize="15"
                                 />
 
                             <!-- Nom Produit -->
@@ -211,17 +216,20 @@
                                 Grid.Row="0"
                                 Grid.Column="1"
                                 HorizontalAlignment="Right"   
+                                Command="{Binding DataContext.StatViewModel.FindProduct, 
+                                    RelativeSource={RelativeSource AncestorType={x:Type StackPanel}}}"
+                                CommandParameter="{Binding ProductViewModel}"
                                 Content="{Binding ProductViewModel.NomProduitIHM}">
                                 <materialDesign:Chip.Style>
                                     <Style TargetType="materialDesign:Chip">
                                         <Style.Setters>
                                             <Setter Property="IconBackground" Value="#880E4F" />
-                                            <Setter Property="FontSize" Value="15"/>
+                                            <Setter Property="FontSize" Value="17"/>
                                         </Style.Setters>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ProductViewModel.NomProduitIHM, Converter={StaticResource PositionConverter}}" Value="4">
                                                 <Setter Property="IconBackground" Value="#EDEDED"/>
-                                                <Setter Property="FontSize" Value="14"/>
+                                                <Setter Property="FontSize" Value="16"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -265,7 +273,8 @@
                                 Foreground="#FFB366"
                                 Background="LightGray"
                                 BorderBrush="Transparent"
-                                Maximum="100" 
+                                Maximum="{Binding DataContext.StatViewModel.FirstPurchaseCount, 
+                                    RelativeSource={RelativeSource AncestorType={x:Type StackPanel}}}" 
                                 Height="12"
                                 Value="{Binding PurchaseCount}" />
                         </Grid>

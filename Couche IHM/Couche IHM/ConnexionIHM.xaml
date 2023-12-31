@@ -50,7 +50,7 @@
 
                 <!-- Identifiant-->
                 <TextBox 
-                    Text="{Binding Identifiant}"
+                    Text="{Binding Identifiant, UpdateSourceTrigger=PropertyChanged}"
                     Foreground="White"
                     VerticalAlignment="Top"
                     materialDesign:HintAssist.Hint="Identifiant" 
@@ -60,13 +60,14 @@
 
                 <!-- Mot de passe-->
                 <PasswordBox 
-                    materialDesign:PasswordBoxAssist.Password="{Binding Password}"
+                    materialDesign:PasswordBoxAssist.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                     VerticalAlignment="Top"
                     Grid.Row="2"
                     Margin="10,0,10,0"
                     Foreground="White"
                     materialDesign:HintAssist.Hint="Password"
                     materialDesign:TextFieldAssist.HasClearButton="True"
+                    KeyDown="PasswordBox_KeyDown"
                     Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}" />
 
                 <!-- Bouton -->

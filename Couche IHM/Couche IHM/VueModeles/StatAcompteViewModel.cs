@@ -3,10 +3,10 @@ using Modeles;
 
 namespace Couche_IHM.VueModeles
 {
-    public class StatAcompteViewModel
+    public class StatAccountViewModel
     {
         #region attributes
-        private AcompteViewModel adherentViewModel;
+        private AccountViewModel adherentViewModel;
         private float argent;
         #endregion
 
@@ -14,7 +14,7 @@ namespace Couche_IHM.VueModeles
         /// <summary>
         /// Constructeur du stat acompte vue modele
         /// </summary>
-        public StatAcompteViewModel(StatAcompte stat,AcompteViewModel adherentViewModel)
+        public StatAccountViewModel(StatAccount stat,AccountViewModel adherentViewModel)
         {
             this.adherentViewModel = adherentViewModel;
             this.argent = stat.Money;
@@ -23,9 +23,9 @@ namespace Couche_IHM.VueModeles
 
         #region properties
         /// <summary>
-        /// Acompte de la stat
+        /// Account de la stat
         /// </summary>
-        public AcompteViewModel AdherentViewModel { get => adherentViewModel; set => adherentViewModel = value; }
+        public AccountViewModel AccountsViewModel { get => adherentViewModel; set => adherentViewModel = value; }
         /// <summary>
         /// Argent dépensé formatté
         /// </summary>

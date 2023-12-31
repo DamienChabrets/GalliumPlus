@@ -5,13 +5,13 @@ using System.Windows.Data;
 
 namespace Couche_IHM.VueModeles
 {
-    public class AcompteAndCheckboxConverter : IMultiValueConverter
+    public class AccountAndCheckboxConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values.Length == 2 && values[0] is AcompteViewModel acompte && values[1] is bool isChecked)
+            if (values.Length == 2 && values[0] is AccountViewModel acompte && values[1] is bool isChecked)
             {
-                return new Tuple<AcompteViewModel, bool>(acompte, isChecked);
+                return new Tuple<AccountViewModel, bool>(acompte, isChecked);
             }
             return Binding.DoNothing;
         }

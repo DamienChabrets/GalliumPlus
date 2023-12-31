@@ -9,13 +9,13 @@ using System.Windows.Data;
 
 namespace Couche_IHM.BindingRules
 {
-    internal class PositionPodiumAcompte : IValueConverter
+    internal class PositionPodiumAccount : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is string identfiant)
             {
-                int position = MainWindowViewModel.Instance.StatViewModel.PodiumAcompte.FindIndex(p => p.AdherentViewModel.IdentifiantIHM == identfiant) + 1;
+                int position = MainWindowViewModel.Instance.StatViewModel.PodiumAccount.FindIndex(p => p.AccountsViewModel.IdentifiantIHM == identfiant) + 1;
                 return position.ToString();
             }
             return null;

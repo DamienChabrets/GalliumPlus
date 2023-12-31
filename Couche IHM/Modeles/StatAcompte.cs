@@ -1,7 +1,7 @@
 ﻿
 namespace Modeles
 {
-    public class StatAcompte
+    public class StatAccount
     {
         #region attributes
         private int id;
@@ -18,7 +18,7 @@ namespace Modeles
         /// <param name="date">date de la stat</param>
         /// <param name="money">argent de la stat</param>
         /// <param name="acompte_id">numéro de l'acompte</param>
-        public StatAcompte(int id, DateTime date, float money, int acompte_id)
+        public StatAccount(int id, DateTime date, float money, int acompte_id)
         {
             this.acompte_id = acompte_id;
             this.money = money;
@@ -28,7 +28,7 @@ namespace Modeles
         #endregion
 
         #region properties
-        public int Acompte_Id { get => acompte_id; set => acompte_id = value; }
+        public int Account_Id { get => acompte_id; set => acompte_id = value; }
         public float Money { get => money; set => money = value; }
         public int Id { get => id; set => id = value; }
         public DateTime Date { get => date; set => date = value; }

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Couche Data", "Couche Data\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modeles", "Modeles\Modeles.csproj", "{2DB5D1B3-23F7-4588-AF56-DF548D681ED9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GalliumPlusApi", "GalliumPlusApi\GalliumPlusApi.csproj", "{B71AFCAA-E57B-45D9-989B-6C9A01F62E95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{2DB5D1B3-23F7-4588-AF56-DF548D681ED9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DB5D1B3-23F7-4588-AF56-DF548D681ED9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DB5D1B3-23F7-4588-AF56-DF548D681ED9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B71AFCAA-E57B-45D9-989B-6C9A01F62E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B71AFCAA-E57B-45D9-989B-6C9A01F62E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B71AFCAA-E57B-45D9-989B-6C9A01F62E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B71AFCAA-E57B-45D9-989B-6C9A01F62E95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

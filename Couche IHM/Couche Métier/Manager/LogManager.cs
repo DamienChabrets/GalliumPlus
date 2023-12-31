@@ -1,7 +1,7 @@
-﻿using Couche_Data;
-using Couche_Data.Dao;
+﻿using Couche_Data.Dao;
+using Couche_Data.Interfaces;
+using GalliumPlusApi.Dao;
 using Modeles;
-
 
 namespace Couche_Métier.Manager
 {
@@ -11,7 +11,7 @@ namespace Couche_Métier.Manager
         /// <summary>
         /// Permet d'accéder aux données
         /// </summary>
-        private LogDAO logDao;
+        private ILogDAO logDao;
 
         /// <summary>
         /// Liste des logs
@@ -23,32 +23,41 @@ namespace Couche_Métier.Manager
         /// <summary>
         /// Constructeur du log Manager
         /// </summary>
-        public LogManager()
+        public LogManager(AccountManager users)
         {
-            logDao = new LogDAO();
+            if (DevelopmentInfo.isDevelopment)
+            {
+
+                logDao = new LogDAO();
+            }
+            else
+            {
+                logDao = new LogDao(users.GetAdmins());
+            }
+            
+            
             Task.Run(() =>
             {
-                int annee = Convert.ToInt16(DateTime.Now.ToString("yyyy"));
-                int mois = Convert.ToInt16(DateTime.Now.ToString("MM"));
+                int annee = Convert.ToInt32(DateTime.Now.ToString("yyyy"));
+                int mois = Convert.ToInt32(DateTime.Now.ToString("MM"));
                 this.logs = this.logDao.GetLogs(mois, annee);
             });
-
         }
         #endregion
 
         #region methods
         public List<Log> GetLogs(int mois = 0,int annee=0)
         {
-            List<Log> logs = new List<Log>();
+            List<Log> logsList;
             if (mois == 0 || annee == 0)
             {
-                logs = this.logs;
+                logsList = this.logs;
             }
             else
             {
-                logs = this.logDao.GetLogs(mois, annee);
+                logsList = this.logDao.GetLogs(mois, annee);
             }
-            return logs;
+            return logsList;
         }
 
 
@@ -57,6 +66,12 @@ namespace Couche_Métier.Manager
             this.logs.Insert(0, log);
             this.logDao.CreateLog(log);
         }
+
+        public IPaginatedLogReader GetLogsReader(int mois, int annee)
+        {
+            return this.logDao.GetLogsReader(mois, annee);
+        }
+
         #endregion
     }
 }

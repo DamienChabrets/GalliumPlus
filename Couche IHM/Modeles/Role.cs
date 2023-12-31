@@ -27,6 +27,12 @@ namespace Modeles
         /// </summary>
         public string Name { get => name; set => name = value; }
 
+        public override bool Equals(object? obj)
+        {
+            return obj is Role role &&
+                   name == role.name;
+        }
+
         /// <summary>
         /// 
         /// </summary>

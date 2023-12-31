@@ -5,7 +5,7 @@ namespace Couche_IHM.VueModeles
     public enum Frame
     {
         FRAMEACCUEIL,
-        FRAMEACOMPTE,
+        FRAMEACCOUNT,
         FRAMECAISSE,
         FRAMESTOCK,
         FRAMECOMPTES,

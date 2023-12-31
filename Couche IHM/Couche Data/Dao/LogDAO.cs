@@ -1,45 +1,48 @@
-﻿using Modeles;
+﻿using Couche_Data.Interfaces;
+using Modeles;
 using MySql.Data.MySqlClient;
 
 namespace Couche_Data.Dao
 {
-    public class LogDAO
+    public class LogDAO : ILogDAO
     {
 
         public void CreateLog(Log log)
         {
-            lock (dbsDAO.Instance.DatabaseLock)
-            {
-                //Connection
-                dbsDAO.Instance.OpenDataBase();
+            string connString = dbsDAO.ConnectionString;
+            MySqlConnection sql = new MySqlConnection(connString);
 
-                //Requette SQL
-                string formattedDate = log.Date.ToString("yyyy-MM-dd HH:mm:ss");
-                string stm = $"INSERT INTO logs VALUES(0,'{log.Message}','{formattedDate}',{log.Theme},'{log.Auteur}')";
-                MySqlCommand cmd = new MySqlCommand(stm, dbsDAO.Instance.Sql);
-                cmd.Prepare();
+            //Connection
+            sql.Open();
 
-                //lecture de la requette
-                cmd.ExecuteNonQuery();
+            //Requette SQL
+            string formattedDate = log.Date.ToString("yyyy-MM-dd HH:mm:ss");
+            string stm = $"INSERT INTO logs VALUES(0,@message,'{formattedDate}',{log.Theme},'{log.Auteur}')";
+            MySqlCommand cmd = new MySqlCommand(stm, sql);
+            cmd.Parameters.AddWithValue("@message", log.Message);
+            cmd.Prepare();
 
-                dbsDAO.Instance.CloseDatabase();
-            }
+            //lecture de la requette
+            cmd.ExecuteNonQuery();
+
+            sql.Close();
+            
         }
 
 
-        public List<Log> GetLogs(int mois,int annee)
+        public List<Log> GetLogs(int mois, int annee)
         {
             //Connection
-            string connString = String.Format("server={0};port={1};user id={2};password={3};database={4};SslMode={5}", "51.178.36.43", "3306", "c2_gallium", "DfD2no5UJc_nB", "c2_gallium", "none");
+            string connString = dbsDAO.ConnectionString;
             MySqlConnection sql = new MySqlConnection(connString);
             sql.Open();
             //Requette SQL 
-            string stm = $"SELECT * FROM Logs WHERE YEAR(date_at) =  {annee} AND MONTH(date_at) = {mois} ORDER BY date_at DESC";
+            string stm = $"SELECT * FROM logs WHERE YEAR(date_at) =  {annee} AND MONTH(date_at) = {mois} ORDER BY date_at DESC";
             MySqlCommand cmd = new MySqlCommand(stm, sql);
             cmd.Prepare();
 
             //lecture de la requette
-            MySqlDataReader rdr = cmd.ExecuteReader();
+             MySqlDataReader rdr = cmd.ExecuteReader();
 
             List<Log> logs = new List<Log>();
             while (rdr.Read())
@@ -51,9 +54,9 @@ namespace Couche_Data.Dao
             return logs;
         }
 
-       
-
-
-
+        public IPaginatedLogReader GetLogsReader(int mois, int annee)
+        {
+            return new CachedLogReader(20, this.GetLogs(mois, annee));
+        }
     }
 }

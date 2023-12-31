@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using System.Reflection;
 
 namespace Couche_Data.Dao
 {
@@ -75,13 +76,49 @@ namespace Couche_Data.Dao
             get { return databaseLock; }
         }
 
+        private static string? connectionString;
+
+        public static string ConnectionString
+        {
+            get
+            {
+                if (connectionString == null)
+                {
+                    var assembly = Assembly.GetExecutingAssembly();
+                    string resourceName = assembly.GetManifestResourceNames().Single(str => str.EndsWith("ConnectionString.txt"));
+                    using Stream stream = assembly.GetManifestResourceStream(resourceName)!;
+                    using StreamReader reader = new StreamReader(stream);
+                    connectionString = reader.ReadToEnd();
+                }
+                return connectionString;
+            }
+        }
+        public static string ConnectionStringV
+        {
+            get
+            {
+                if (connectionString == null)
+                {
+                    var assembly = Assembly.GetExecutingAssembly();
+                    string resourceName = assembly.GetManifestResourceNames().Single(str => str.EndsWith("ConnectionString.txt"));
+                    using Stream stream = assembly.GetManifestResourceStream(resourceName)!;
+                    using StreamReader reader = new StreamReader(stream);
+                    connectionString = reader.ReadToEnd();
+                    connectionString = connectionString.Replace("database=c2_gallium", "database=c2_etismash"); // TODO enlever cette ligne quand stat avec api
+                }
+                return connectionString;
+            }
+        }
+
+
+
+
         /// <summary>
         /// Se connecte à la base de donnée
         /// </summary>
         private void ConnexionToBdd()
         {
-            string connString = String.Format("server={0};port={1};user id={2};password={3};database={4};SslMode={5}", "51.178.36.43", "3306", "c2_gallium", "DfD2no5UJc_nB", "c2_etismash", "none");
-            this.sql = new MySqlConnection(connString);
+            sql = new MySqlConnection(ConnectionString);
         }
 
         /// <summary>

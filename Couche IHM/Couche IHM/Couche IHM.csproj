@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.100.3" />
+    <PackageReference Include="DotNetProjects.WpfToolkit.DataVisualization" Version="6.1.94" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
     <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
   </ItemGroup>

@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Button 
         Style="{x:Null}" 
-        Width="100" 
+        Width="110" 
         Padding="5" 
         Background="Transparent" 
         BorderThickness="0" 
@@ -29,20 +29,20 @@
                 Source="{Binding ImageProduct}"/>
             <TextBlock 
                 Grid.Row="1"
-                FontSize="12" 
+                FontSize="15" 
                 Text="{Binding NomProduitIHM}" 
                 FontWeight="Medium"/>
             <TextBlock 
                 Grid.Row="2"
-                FontSize="10" 
+                FontSize="13" 
                 Text="{Binding Path=QuantiteIHM, StringFormat='Stock : {0}'}"/>
             <TextBlock 
                 Grid.Row="3"
-                FontSize="10"  
+                FontSize="13"  
                 Text="{Binding Path=PrixAdherentIHM, StringFormat='Prix A : {0}'}"/>
             <TextBlock 
                 Grid.Row="4"
-                FontSize="10"  
+                FontSize="13"  
                 Text="{Binding Path=PrixNonAdherentIHM, StringFormat='Prix NA : {0}'}"/>
         </Grid>
     </Button>

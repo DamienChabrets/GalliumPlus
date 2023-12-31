@@ -3,13 +3,48 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:DVC="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=DotNetProjects.DataVisualization.Toolkit"
       xmlns:local="clr-namespace:Couche_IHM.Frames"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="FrameStatistique"
-      Background="White">
+      Title="FrameStat">
 
     <Grid>
-        <TextBlock Text="Statistique" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Liste des acomptes -->
+        <DVC:Chart
+            Margin="20"
+            Grid.Column="0"            
+            Background="Orange">
+            <DVC:Chart.Series>
+                <DVC:BarSeries  Title="Dépenses"  
+                    ItemsSource="{Binding StatViewModel.BestAcomptes}"  
+                    IndependentValueBinding="{Binding Path=AccountsViewModel.NomCompletIHM}"  
+                    
+                    DependentValueBinding="{Binding Path=Argent}">
+                   
+                </DVC:BarSeries>
+            </DVC:Chart.Series>
+        </DVC:Chart>
+
+        <!-- Liste des produits -->
+        <DVC:Chart
+          Margin="20"
+          Grid.Column="1"            
+          Background="Orange">
+            <DVC:Chart.Series>
+                <DVC:BarSeries  Title="Ventes"  
+              ItemsSource="{Binding StatViewModel.BestProducts}"  
+              IndependentValueBinding="{Binding Path=ProductViewModel.NomProduitIHM}"  
+              
+              DependentValueBinding="{Binding Path=PurchaseCount}">
+
+                </DVC:BarSeries>
+            </DVC:Chart.Series>
+        </DVC:Chart>
     </Grid>
 </Page>

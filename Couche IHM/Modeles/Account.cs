@@ -1,45 +1,47 @@
 ﻿
 namespace Modeles
 {
-    public class Acompte
+    public class Account
     {
         #region attributes
         private int id;
         private string identifiant;
         private string nom = "";
         private string prenom = "";
+        private string mail = "";
         private float argent;
-        private bool stillAdherent;
-        private string formation;
+        private bool isMember;
+        private string year;
+        private int roleId;
+        private string hashedPassword;
         #endregion
 
         #region constructeurs
         /// <summary>
         /// Constructeur de la classe adhérent
         /// </summary>
-        /// <param name="id">id de l'adhérent</param>
-        /// <param name="nom">nom de l'adhérent</param>
-        /// <param name="prenom">prenom de l'adhérent</param>
-        /// <param name="canPass">si le mdp peut être skip</param>
-        /// <param name="argent">argent de l'adhérent</param>
-        public Acompte(int id, string identifiant, string nom, string prenom, float argent,string formation,bool stillAdherent = true)
+        public Account(int id, string identifiant, string nom, string prenom,string mail, float argent,string year,bool isMember = true,int role = 2)
         {
             this.id = id;
             this.identifiant = identifiant;
-            this.nom = nom.ToUpper();
+            this.nom = nom;
             this.prenom = prenom;
             this.argent = argent;
-            this.stillAdherent = stillAdherent;
-            this.formation = formation;
+            this.year = year;
+            this.mail = mail;
+            this.roleId = role;
+            this.isMember = isMember;
         }
 
  
         /// <summary>
         /// Constructeur vide pour créer des adhérents
         /// </summary>
-        public Acompte()
+        public Account()
         {
-            this.stillAdherent = true;
+            this.isMember = true;
+            this.roleId = 2;
+            this.argent = 0;
         }
 
         #endregion
@@ -74,12 +76,21 @@ namespace Modeles
         /// <summary>
         /// Est ce que le compte est toujours adhérent
         /// </summary>
-        public bool StillAdherent { get => stillAdherent; set => stillAdherent = value; }
+        public bool IsMember { get => isMember; set => isMember = value; }
 
         /// <summary>
         /// Formation de l'adhérent
         /// </summary>
-        public string Formation { get => formation; set => formation = value; }
+        public string Formation { get => year; set => year = value; }
+        public int RoleId { get => roleId; set => roleId = value; }
+        public string Mail { get => mail; set => mail = value; }
+        public string HashedPassword { get => hashedPassword; set => hashedPassword = value; }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Account account &&
+                   identifiant == account.identifiant;
+        }
 
         #endregion
 

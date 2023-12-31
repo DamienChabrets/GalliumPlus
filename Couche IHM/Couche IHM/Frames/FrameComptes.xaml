@@ -11,22 +11,15 @@
       Title="FrameComptes"
       Background="White">
 
-    <Grid >
-        <!-- Ligne 1 - Colonne 0: Liste des adhérents-->
+    <Grid  Margin="20,50,20,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
             <RowDefinition Height="8*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.5*"/>
-            <ColumnDefinition Width="17*"/>
-            <ColumnDefinition Width="0.5*"/>
-        </Grid.ColumnDefinitions>
 
         <!-- ScrollViewer des comptes-->
-        <ScrollViewer Grid.Row="1" Grid.Column="1"  VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" >
-            <ListView  ItemsSource="{Binding UserViewModel.Users}"  HorizontalContentAlignment="Stretch"  VerticalContentAlignment="Top">
+        <ScrollViewer  VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" Margin="0,10,0,10"   >
+            <ListView  ItemsSource="{Binding AccountsViewModel.AccountsAdmins}"  HorizontalContentAlignment="Stretch"  VerticalContentAlignment="Top">
                 <ListView.Template>
                     <ControlTemplate>
                         <!-- Header des colonnes -->
@@ -60,7 +53,7 @@
                                     FontWeight="Medium" 
                                     FontFamily="Roboto"  
                                     FontSize="18" 
-                                    Text="Identifiant" />
+                                    Text="Mail" />
                             
                                 <TextBlock   
                                     HorizontalAlignment="Center"
@@ -113,14 +106,14 @@
                                 FontFamily="Roboto" 
                                 FontSize="16"/>
                             <Label 
-                                Content="{Binding EmailIHM}" 
+                                Content="{Binding Email}" 
                                 Margin="30,0,0,0" 
                                 Grid.Column="1" 
                                 FontWeight="Medium" 
                                 FontFamily="Roboto" 
                                 FontSize="16"/>
                             <Label 
-                                Content="{Binding RoleIHM}" 
+                                Content="{Binding Role}" 
                                 Margin="50,0,0,0" 
                                 Grid.Column="2" 
                                 FontWeight="Medium" 
@@ -128,7 +121,7 @@
                                 FontSize="16"/>
                             <Button 
                                 Style="{StaticResource buttonImage}"  
-                                Grid.Column="3" 
+                                Grid.Column="3"             
                                 Command="{Binding ShowUpdate}"
                                 >
                                 <materialDesign:PackIcon
@@ -142,58 +135,21 @@
                 </ListBox.ItemTemplate>
             </ListView>
         </ScrollViewer>
-
         <Button
             BorderThickness="0"
-            Command="{Binding UserViewModel.OpenUser}"
-            CommandParameter="NEW"
+            Command="{Binding AccountsViewModel.OpenModifAdmin}"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Grid.Row="1"
             Background="Gray">
-            <DockPanel >
-                <materialDesign:PackIcon
-                    Width="20"
-                    Margin="-10,2,5,0"
-                    Height="20"
-                    Kind="Plus"/>
             <TextBlock
-                    Text="Créer un compte"
-                    FontSize="16"/>
-            </DockPanel>
+                Text="Gérer les comptes"
+                FontSize="16"/>
+ 
         </Button>
 
-        <!-- Suppression d un compte-->
-        <materialDesign:DialogHost  CloseOnClickAway="True" Grid.ColumnSpan="2" Grid.RowSpan="2" OverlayBackground="Gray" IsOpen="{Binding UserViewModel.CurrentUser.ShowConfirmationDelete}" DialogTheme="Inherit" >
-            <materialDesign:DialogHost.DialogContent>
-                <Grid Margin="30">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock FontSize="24" Margin="0 0 0 20">
-                            <TextBlock Text="{Binding Path=UserViewModel.CurrentUser.NomCompletIHM, StringFormat=Suppresion de {0}}" />
-                        </TextBlock>
-                        <UniformGrid Rows="1" Columns="2" Height="50">
-                            <Button 
-                                Margin="0 0 20 0" 
-                                FontSize="18"
-                                Content="Annuler"
-                                Command="{Binding UserViewModel.CurrentUser.CancelDeleteU}"
-                                Style="{StaticResource buttonBlack}" 
-                                Grid.Column="2"/>
-                            <Button 
-                                Content="Confirmer"
-                                Margin="20 0 0 0" 
-                                FontSize="18" 
-                                Command="{Binding UserViewModel.CurrentUser.DeleteU}"
-                                Style="{StaticResource buttonBlack}"/>
-                        </UniformGrid>
-
-                    </StackPanel>
-                </Grid>
-            </materialDesign:DialogHost.DialogContent>
-        </materialDesign:DialogHost>
-
         <!-- Modification / Création Compte-->
-        <materialDesign:DialogHost Grid.ColumnSpan="3" Grid.RowSpan="3" DialogTheme="Inherit" CloseOnClickAway="True" OverlayBackground="Gray" IsOpen="{Binding UserViewModel.ShowModifCreateUser}">
+        <materialDesign:DialogHost DialogTheme="Inherit" OverlayBackground="Gray" IsOpen="{Binding AccountsViewModel.DialogModifAdmin}">
             <materialDesign:DialogHost.DialogContent>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -202,6 +158,7 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="80*" />
+                        <RowDefinition Height="80" />
                         <RowDefinition Height="80" />
                         <RowDefinition Height="80" />
                         <RowDefinition Height="80" />
@@ -219,41 +176,23 @@
                         FontSize="30" 
                         FontWeight="Black"/>
 
-
-                    <Button
-                        HorizontalAlignment="Right"
-                        Margin="0,10,10,10"
-                        VerticalAlignment="Top"
-                        Grid.Column="2"
-                        Command="{Binding UserViewModel.CurrentUser.PreviewDeleteU}"
-                        Grid.Row="0">
-                        <materialDesign:PackIcon 
-                            Width="23"
-                            Height="23"
-                            Kind="Delete"/>
-                        <Button.Style>
-                            <Style BasedOn="{StaticResource buttonImage}"  TargetType="Button">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding UserViewModel.ShowDeleteUser}" Value="true">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding UserViewModel.ShowDeleteUser}" Value="false">
-                                        <Setter Property="Visibility" Value="Hidden"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-                    
+                    <ComboBox
+                        Margin="20,15,20,10"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2" 
+                        ItemsSource="{Binding AccountsViewModel.Accounts}"
+                        SelectedItem="{Binding AccountsViewModel.CurrentAccount}"
+                        FontSize="16"
+                        />
                     <!-- Identifiant -->
 
                     <TextBox 
                         Margin="20,15,20,10"
                         Grid.ColumnSpan="2" 
-                        Grid.Row="1"
-                        materialDesign:HintAssist.Hint="Identifiant"
+                        Grid.Row="2"
+                        materialDesign:HintAssist.Hint="Mail"
                         FontSize="16"
-                        Text="{Binding UserViewModel.CurrentUser.EmailIHM}"
+                        Text="{Binding AccountsViewModel.CurrentAccount.Email}"
                         Style="{StaticResource MaterialDesignFilledTextBox}" 
                         
                         />
@@ -261,10 +200,10 @@
                     <!-- Nom -->
                     <TextBox 
                         Grid.Column="0" 
-                        Grid.Row="2"
+                        Grid.Row="3"
                         Margin="20,20,20,10"
                         FontSize="16"
-                        Text="{Binding UserViewModel.CurrentUser.NomIHM}"
+                        Text="{Binding AccountsViewModel.CurrentAccount.NomIHM}"
                         materialDesign:HintAssist.Hint="Nom"
                         Style="{StaticResource MaterialDesignFilledTextBox}" 
                         />
@@ -273,8 +212,8 @@
                     <TextBox 
                         Margin="20,20,20,10"
                         FontSize="16"
-                        Grid.Column="1" Grid.Row="2"
-                        Text="{Binding UserViewModel.CurrentUser.PrenomIHM}"
+                        Grid.Column="1" Grid.Row="3"
+                        Text="{Binding AccountsViewModel.CurrentAccount.PrenomIHM}"
                         materialDesign:HintAssist.Hint="Prénom"
                         Style="{StaticResource MaterialDesignFilledTextBox}" 
                         />
@@ -283,9 +222,9 @@
                     <PasswordBox 
                         Margin="20,20,20,10"
                         Grid.Column="0" 
-                        Grid.Row="3"
+                        Grid.Row="4"
                         FontSize="16"
-                        materialDesign:PasswordBoxAssist.Password="{Binding UserViewModel.CurrentUser.MdpIHM1}"
+                        materialDesign:PasswordBoxAssist.Password="{Binding AccountsViewModel.CurrentAccount.MdpIHM1}"
                         materialDesign:HintAssist.Hint="Nouveau mot de passe"
                         Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}" />
                         
@@ -294,84 +233,45 @@
                     <PasswordBox 
                         Margin="20,20,20,10"
                         Grid.Column="1" 
-                        Grid.Row="3"
+                        Grid.Row="4"
                         FontSize="15"
-                        materialDesign:PasswordBoxAssist.Password="{Binding UserViewModel.CurrentUser.MdpIHM2}"
+                        materialDesign:PasswordBoxAssist.Password="{Binding AccountsViewModel.CurrentAccount.MdpIHM2}"
                         materialDesign:HintAssist.Hint="Confirmer mot de passe"
                         Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}" />
                         
 
                     <!-- Role -->
                     <ComboBox 
-                        Grid.Row="4" 
+                        Grid.Row="5" 
                         Grid.ColumnSpan="2" 
                         Margin="20,20,20,10"
                         FontSize="16"
                         materialDesign:HintAssist.Hint="Role"
-                        SelectedItem="{Binding UserViewModel.CurrentUser.RoleIHM}"
-                        ItemsSource="{Binding UserViewModel.Roles}"    
+                        SelectedItem="{Binding AccountsViewModel.CurrentAccount.Role}"
+                        ItemsSource="{Binding AccountsViewModel.Roles}"    
                         />
 
                     <!-- Bouton -->
-                    <!-- Boutons -->
-                    <Button 
-                        Content="Créer" 
-                        Background="{StaticResource galliumColor}" 
-                        Foreground="White"
-                        BorderThickness="0"
-                        Grid.Row="6" 
-                        Grid.Column="1" 
-                        Grid.ColumnSpan="2" 
-                        FontSize="16"
-                        Margin="20,0,20,10"
-                        Command="{Binding UserViewModel.CurrentUser.CreateU}">
-                        <Button.Style>
-                            <Style BasedOn="{StaticResource MaterialDesignRaisedDarkButton}" TargetType="Button">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding UserViewModel.CurrentUser.Action}" Value="NEW">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding UserViewModel.CurrentUser.Action}" Value="UPDATE">
-                                        <Setter Property="Visibility" Value="Hidden"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
 
                     <Button 
-                        Content="Modifier" 
+                        Content="Mettre à jour" 
                         Background="{StaticResource galliumColor}"
-                        Grid.Row="6" 
+                        Grid.Row="7" 
                         BorderThickness="0"
                         Grid.Column="1" 
                         Grid.ColumnSpan="2" 
                         FontSize="16"
                         Margin="20,0,20,10" 
-                        Command="{Binding UserViewModel.CurrentUser.UpdateU}">
-                        <Button.Style>
-                            <Style BasedOn="{StaticResource MaterialDesignRaisedDarkButton}" TargetType="Button">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding UserViewModel.CurrentUser.Action}" Value="NEW">
-                                        <Setter Property="Visibility" Value="Hidden"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding UserViewModel.CurrentUser.Action}" Value="UPDATE">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
+                        Command="{Binding AccountsViewModel.CurrentAccount.ModifyAdherent}"/>
 
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-                 
                     <Button 
-                        Command="{Binding UserViewModel.CurrentUser.ResetU}"
+                        Command="{Binding AccountsViewModel.CurrentAccount.ResetAdh}"
                         Content="Annuler" 
                         BorderThickness="0"
                         Background="Gray"
                         FontSize="16"
                         Grid.Column="0" 
-                        Grid.Row="6" 
+                        Grid.Row="7" 
                         Margin="20,0,20,10"  />
                 </Grid>
             </materialDesign:DialogHost.DialogContent>

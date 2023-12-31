@@ -5,17 +5,16 @@ using MySql.Data.MySqlClient;
 
 namespace Couche_Data.Dao
 {
-
-    public class UserDAO : IUserDAO
+    public class AccountDAO : IAccountDao
     {
 
-        public void CreateCompte(User compte)
+        public void CreateAdhérent(Account adhérent)
         {
             //Connection
             dbsDAO.Instance.OpenDataBase();
 
             //Requette SQL
-            string stm = $"INSERT INTO users VALUES (0,'{compte.Prenom}','{compte.Nom}','{compte.Mail}','{compte.HashedPassword}',{compte.IdRole})";
+            string stm = $"INSERT INTO User VALUES (0,'{adhérent.Identifiant}','{adhérent.Prenom}','{adhérent.Nom}','{adhérent.Mail}',{adhérent.RoleId},'{adhérent.Formation}',{adhérent.Argent},{adhérent.IsMember},' ',' ','2030-11-25 00:00:00')";
             MySqlCommand cmd = new MySqlCommand(stm, dbsDAO.Instance.Sql);
             cmd.Prepare();
 
@@ -24,87 +23,94 @@ namespace Couche_Data.Dao
             using (MySqlCommand selectCommand = new MySqlCommand("SELECT LAST_INSERT_ID() AS nouvel_id", dbsDAO.Instance.Sql))
             {
                 int nouvelId = Convert.ToInt32(selectCommand.ExecuteScalar());
-                compte.ID = nouvelId;
-
+                adhérent.Id = nouvelId;
             }
+
             dbsDAO.Instance.CloseDatabase();
         }
 
-        public List<User> GetComptes()
+
+        public List<Account> GetAdhérents()
         {
             //Connection
             dbsDAO.Instance.OpenDataBase();
 
             //Requette SQL
-            string stm = "SELECT * FROM users ORDER BY firstname";
+            string stm = "SELECT * FROM User ORDER BY userId";
             MySqlCommand cmd = new MySqlCommand(stm, dbsDAO.Instance.Sql);
             cmd.Prepare();
 
             //lecture de la requette
             MySqlDataReader rdr = cmd.ExecuteReader();
-            List<User> users = new List<User>();
+
+            List<Account> acomptes = new List<Account>();
             while (rdr.Read())
             {
-                users.Add(new User(rdr.GetInt32("user_id"), rdr.GetString("lastname"), rdr.GetString("firstname"), rdr.GetString("email"), rdr.GetString("password"), rdr.GetInt16("grade_id")));
+               acomptes.Add(new Account(rdr.GetInt32("id"), rdr.GetString("userId"), rdr.GetString("lastName"), rdr.GetString("firstName"), rdr.GetString("email"), rdr.GetFloat("deposit"),rdr.GetString("year"),rdr.GetBoolean("isMember"), rdr.GetInt16("role")));
             }
 
-
+            rdr.Close();
             dbsDAO.Instance.CloseDatabase();
-            return users;
+            return acomptes;
         }
+
         public List<Role> GetRoles()
         {
+            //Connection
             dbsDAO.Instance.OpenDataBase();
 
             //Requette SQL
-            string stm2 = "SELECT * FROM grades";
-            MySqlCommand cmd2 = new MySqlCommand(stm2, dbsDAO.Instance.Sql);
-            cmd2.Prepare();
+            string stm = "SELECT * FROM Role";
+            MySqlCommand cmd = new MySqlCommand(stm, dbsDAO.Instance.Sql);
+            cmd.Prepare();
 
             //lecture de la requette
-            MySqlDataReader rdr2 = cmd2.ExecuteReader();
+            MySqlDataReader rdr = cmd.ExecuteReader();
+
             List<Role> roles = new List<Role>();
-            while (rdr2.Read())
+            while (rdr.Read())
             {
-                roles.Add(new Role(rdr2.GetInt32("grade_id"), rdr2.GetString("name")));
+                roles.Add(new Role(rdr.GetInt32("id"), rdr.GetString("name")));
             }
-            rdr2.Close();
+
+            rdr.Close();
             dbsDAO.Instance.CloseDatabase();
             return roles;
         }
 
-        public void RemoveCompte(User compte)
+        public void RemoveAdhérent(Account adhérent)
         {
             //Connection
             dbsDAO.Instance.OpenDataBase();
 
             //Requette SQL
-            string stm = $"DELETE FROM users WHERE user_id = {compte.ID}";
+            string stm = $"DELETE FROM  User WHERE id = {adhérent.Id}";
             MySqlCommand cmd = new MySqlCommand(stm, dbsDAO.Instance.Sql);
             cmd.Prepare();
 
+            //lecture de la requette
             cmd.ExecuteNonQuery();
 
             dbsDAO.Instance.CloseDatabase();
         }
-    
 
-        public void UpdateCompte(User compte)
+        public void UpdateAdhérent(Account adhérent)
         {
             //Connection
             dbsDAO.Instance.OpenDataBase();
 
             //Requette SQL
-            string stm = $"UPDATE users SET firstname = '{compte.Prenom}',lastname = '{compte.Nom}',email = '{compte.Mail}',password = '{compte.HashedPassword}',grade_id = {compte.IdRole} WHERE user_id = {compte.ID}";
+            
+            string formattedAmountMoney = adhérent.Argent.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            string stm = $"UPDATE User set lastName = '{adhérent.Nom}', firstName = '{adhérent.Prenom}', deposit = {formattedAmountMoney}, isMember = {adhérent.IsMember}, role = {adhérent.RoleId} , email = '{adhérent.Mail}' ,year = '{adhérent.Formation}',password = '{adhérent.HashedPassword}', userId = '{adhérent.Identifiant}' WHERE id = {adhérent.Id}";
             MySqlCommand cmd = new MySqlCommand(stm, dbsDAO.Instance.Sql);
             cmd.Prepare();
-                
+
+            //lecture de la requette
             cmd.ExecuteNonQuery();
 
             dbsDAO.Instance.CloseDatabase();
-        }
 
-      
+        }
     }
-
 }

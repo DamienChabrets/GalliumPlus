@@ -1,44 +1,55 @@
-﻿using Couche_Data;
-using Couche_Data.Dao;
+﻿using Couche_Data.Dao;
+using Couche_Data.Interfaces;
+using GalliumPlusApi.Dao;
 using Modeles;
 
 namespace Couche_Métier.Manager
 {
-    public class StatAcompteManager
+    public class StatAccountManager
     {
         #region attributes
         /// <summary>
         /// Dao permettant de gérer les données des stats d'acompte
         /// </summary>
-        private StatAcompteDAO dao;
+        private IStatAccountDAO dao;
 
         /// <summary>
         /// Liste des stats d'acompte
         /// </summary>
-        private List<StatAcompte> statAcompteList;
+        private List<StatAccount> statAccountList;
         #endregion
 
         #region constructor
         /// <summary>
         /// Constructeur du statProduit Manager
         /// </summary>
-        public StatAcompteManager()
+        public StatAccountManager()
         {
-            dao = new StatAcompteDAO();
-            Task.Run(() => this.statAcompteList = dao.GetStat());
+            if (DevelopmentInfo.isDevelopment)
+            {
+                dao = new StatAccountDAO();
+            }
+            else
+            {
+                dao = new StatAccountDao();
+            }
+            
+            this.statAccountList = new List<StatAccount>();
+            
 
         }
         #endregion
 
         #region methods
-        public void CreateStat(StatAcompte stat)
+        public void CreateStat(StatAccount stat)
         {
             dao.CreateStat(stat);
         }
 
-        public List<StatAcompte> GetStats()
+        public List<StatAccount> GetStats()
         {
-            return this.statAcompteList;
+            this.statAccountList = dao.GetStat();
+            return this.statAccountList;
         }
         #endregion
     }

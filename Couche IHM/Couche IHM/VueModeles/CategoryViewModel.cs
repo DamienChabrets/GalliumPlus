@@ -97,8 +97,8 @@ namespace Couche_IHM.VueModeles
         public void ActivateCategory()
         {
             // Mise à jour data
-            category.Visible = !this.invisible;
-            this.categoryManager.UpdateCategory(category);
+            category.Visible = true;
+            // TOUJOURS VISIBLE AHAHAHHAHA this.categoryManager.UpdateCategory(category);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Couche_IHM.VueModeles
         {
             // Mise à jour data
             category.NomCategory = this.nomCat;
-            this.categoryManager.UpdateCategory(category);
+            MessageBoxErrorHandler.DoesntThrow(()=> this.categoryManager.UpdateCategory(category));
         }
 
 
@@ -130,14 +130,16 @@ namespace Couche_IHM.VueModeles
         public void DeleteCategory()
         {
             // Mise à jour data
-            this.categoryManager.DeleteCategory(category);
-            foreach (ProductViewModel prod in MainWindowViewModel.Instance.ProductViewModel.Products.ToList().FindAll(x => x.CategoryIHM == this))
+            if (MessageBoxErrorHandler.DoesntThrow(() => this.categoryManager.DeleteCategory(category)))
             {
-                prod.DeleteCatNotify();
+                foreach (ProductViewModel prod in MainWindowViewModel.Instance.ProductViewModel.Products.ToList().FindAll(x => x.CategoryIHM == this))
+                {
+                    prod.DeleteCatNotify();
+                }
+
+                // Notifier la vue
+                MainWindowViewModel.Instance.ProductViewModel.Categories.Remove(this);
             }
-            
-            // Notifier la vue
-            MainWindowViewModel.Instance.ProductViewModel.Categories.Remove(this);
         }
 
 
